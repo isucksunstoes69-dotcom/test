@@ -106,7 +106,8 @@ namespace JavawScan
             var node = _root;
             foreach (var b in bytes)
             {
-                if (!node.Children.TryGetValue(b, out var next))
+                Node next;
+                if (!node.Children.TryGetValue(b, out next))
                 {
                     next = new Node();
                     node.Children[b] = next;
@@ -153,8 +154,9 @@ namespace JavawScan
             {
                 byte c = buffer[i];
                 if (c >= 65 && c <= 90) c = (byte)(c + 32); // lowercase ASCII
+                Node next;
                 while (node != _root && !node.Children.ContainsKey(c)) node = node.Fail;
-                if (node.Children.TryGetValue(c, out var next)) node = next;
+                if (node.Children.TryGetValue(c, out next)) node = next;
                 else node = _root;
                 if (node.Outputs.Count > 0)
                     foreach (var id in node.Outputs) found.Add(id);
